@@ -176,30 +176,43 @@ function App() {
   }
 
   function deleteButtonClickHandler(key) {
-    let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
-      (item) => item.uniqueKey !== key
-    );
+    //Take the deletable item and use [0] to take first item from the list
+    let deletableItem = spentAndReceivedAmountDetails.filter(
+      (item) => item.uniqueKey === key
+    )[0];
 
-    let newincomeArray = newSpentAndReceivedAmountDetails
-      .filter((item) => item.spentOrReceived === "received")
-      .map((a) => parseInt(a.amount));
-    setIncomeArray(newincomeArray);
+    if (
+      window.confirm(
+        `Are you sure ? "${deletableItem.receivedOrSpentName}" -"${deletableItem.amount}" will be deleted !!`
+      )
+    ) {
+      let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+        (item) => item.uniqueKey !== key
+      );
 
-    let newSpentArray = newSpentAndReceivedAmountDetails
-      .filter((item) => item.spentOrReceived === "spent")
-      .map((a) => parseInt(a.amount));
-    setSpentArray(newSpentArray);
+      let newincomeArray = newSpentAndReceivedAmountDetails
+        .filter((item) => item.spentOrReceived === "received")
+        .map((a) => parseInt(a.amount));
+      setIncomeArray(newincomeArray);
+      localStorage.setItem("incomeArray", JSON.stringify(newincomeArray));
 
-    setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
-    updateNewDisplayArrayDetails(
-      displayOption,
-      newSpentAndReceivedAmountDetails
-    );
+      let newSpentArray = newSpentAndReceivedAmountDetails
+        .filter((item) => item.spentOrReceived === "spent")
+        .map((a) => parseInt(a.amount));
+      setSpentArray(newSpentArray);
+      localStorage.setItem("spentArray", JSON.stringify(newSpentArray));
 
-    localStorage.setItem(
-      "spentAndReceivedAmountDetails",
-      JSON.stringify(newSpentAndReceivedAmountDetails)
-    );
+      setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
+      updateNewDisplayArrayDetails(
+        displayOption,
+        newSpentAndReceivedAmountDetails
+      );
+
+      localStorage.setItem(
+        "spentAndReceivedAmountDetails",
+        JSON.stringify(newSpentAndReceivedAmountDetails)
+      );
+    }
   }
 
   function handleDisplayTableOption(e) {
@@ -236,7 +249,7 @@ function App() {
         handleReceivedOrSpentName={handleReceivedOrSpentName}
         handleamount={handleamount}
         handleSpentOrReceived={handleSpentOrReceived}
-        spentOrReceived ={spentOrReceived}
+        spentOrReceived={spentOrReceived}
         submitFormHandler={submitFormHandler}
       />
       <ShowDetailsComponent

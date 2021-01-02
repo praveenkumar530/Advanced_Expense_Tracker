@@ -5,11 +5,11 @@ function ShowDetailsComponent({ totalReceived, totalSpent, remaining }) {
     <ul className="list-group">
       <li className="list-group-item d-flex justify-content-between align-items-center  mb-1">
         Total Received Amount
-        <span className="badge badge-primary badge-pill">{totalReceived}</span>
+        <span className="badge badge-success badge-pill">{totalReceived}</span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center  mb-1">
         Total Spent Amount
-        <span className="badge badge-primary badge-pill">{totalSpent}</span>
+        <span className="badge badge-danger badge-pill">{totalSpent}</span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center ">
         Remaining Amount
