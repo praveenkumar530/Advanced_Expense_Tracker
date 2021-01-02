@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, Children } from "react";
+import { useState, useEffect } from "react";
 import HeaderComponent from "./components/header.component";
 import InputFormComponent from "./components/inputform.component";
 import ShowDetailsComponent from "./components/showDetails.component";
@@ -26,8 +26,8 @@ function App() {
     "Nov",
     "Dec",
   ];
-  const [receivedOrSpentName, setReceivedOrSpentName] = useState("Apple");
-  const [amount, setAmount] = useState(10);
+  const [receivedOrSpentName, setReceivedOrSpentName] = useState("");
+  const [amount, setAmount] = useState("");
   const [spentOrReceived, setspentOrReceived] = useState("spent");
   const [
     spentAndReceivedAmountDetails,
@@ -129,21 +129,49 @@ function App() {
 
   function resetExpensesHandler() {
     if (window.confirm("Are you sure ? This will clear all the records !!")) {
-      setSpentAndReceivedAmountDetails([]);
-      setTempSpentAndReceivedAmountDetails([]);
       setReceivedOrSpentName("");
       setspentOrReceived("spent");
       setTotalReceived("");
       setTotalSpent("");
       setRemaining("");
-      setIncomeArray([]);
-      setSpentArray([]);
       setAmount("");
+      setTempSpentAndReceivedAmountDetails([]);
 
-      //Empty values to local storage
-      localStorage.setItem("spentAndReceivedAmountDetails", []);
-      localStorage.setItem("incomeArray", []);
-      localStorage.setItem("spentArray", []);
+      if (displayOption === "received") {
+        let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+          (item) => item.spentOrReceived !== "received"
+        );
+        setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
+        setIncomeArray([]);
+        setDisplayOption("received");
+        localStorage.setItem(
+          "spentAndReceivedAmountDetails",
+          JSON.stringify(newsetSpentAndReceivedAmountDetails)
+        );
+        localStorage.setItem("incomeArray", []);
+      } else if (displayOption === "spent") {
+        let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+          (item) => item.spentOrReceived !== "spent"
+        );
+        setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
+        setSpentArray([]);
+        setDisplayOption("spent");
+        //Empty values to local storage
+        localStorage.setItem(
+          "spentAndReceivedAmountDetails",
+          JSON.stringify(newsetSpentAndReceivedAmountDetails)
+        );
+        localStorage.setItem("spentArray", []);
+      } else {
+        setSpentAndReceivedAmountDetails([]);
+        setIncomeArray([]);
+        setSpentArray([]);
+        setDisplayOption("all");
+        //Empty values to local storage
+        localStorage.setItem("spentAndReceivedAmountDetails", []);
+        localStorage.setItem("incomeArray", []);
+        localStorage.setItem("spentArray", []);
+      }
     }
   }
 
@@ -151,23 +179,47 @@ function App() {
     let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
       (item) => item.uniqueKey !== key
     );
+
+    let newincomeArray = newSpentAndReceivedAmountDetails
+      .filter((item) => item.spentOrReceived === "received")
+      .map((a) => parseInt(a.amount));
+    setIncomeArray(newincomeArray);
+
+    let newSpentArray = newSpentAndReceivedAmountDetails
+      .filter((item) => item.spentOrReceived === "spent")
+      .map((a) => parseInt(a.amount));
+    setSpentArray(newSpentArray);
+
     setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
-    setTempSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
+    updateNewDisplayArrayDetails(
+      displayOption,
+      newSpentAndReceivedAmountDetails
+    );
+
+    localStorage.setItem(
+      "spentAndReceivedAmountDetails",
+      JSON.stringify(newSpentAndReceivedAmountDetails)
+    );
   }
 
   function handleDisplayTableOption(e) {
     setDisplayOption(e.target.value);
+    updateNewDisplayArrayDetails(e.target.value, spentAndReceivedAmountDetails);
+  }
+
+  // handle delete method
+  function updateNewDisplayArrayDetails(displayOption, totalItemsArray) {
     let newTempSpentAndReceivedAmountDetails;
-    if (e.target.value === "received") {
-      newTempSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+    if (displayOption === "received") {
+      newTempSpentAndReceivedAmountDetails = totalItemsArray.filter(
         (item) => item.spentOrReceived === "received"
       );
-    } else if (e.target.value === "spent") {
-      newTempSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+    } else if (displayOption === "spent") {
+      newTempSpentAndReceivedAmountDetails = totalItemsArray.filter(
         (item) => item.spentOrReceived === "spent"
       );
     } else {
-      newTempSpentAndReceivedAmountDetails = [...spentAndReceivedAmountDetails];
+      newTempSpentAndReceivedAmountDetails = [...totalItemsArray];
     }
 
     setTempSpentAndReceivedAmountDetails(newTempSpentAndReceivedAmountDetails);
@@ -184,6 +236,7 @@ function App() {
         handleReceivedOrSpentName={handleReceivedOrSpentName}
         handleamount={handleamount}
         handleSpentOrReceived={handleSpentOrReceived}
+        spentOrReceived ={spentOrReceived}
         submitFormHandler={submitFormHandler}
       />
       <ShowDetailsComponent

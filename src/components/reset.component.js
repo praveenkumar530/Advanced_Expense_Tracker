@@ -6,13 +6,15 @@ function ResetComponent({
   displayOption,
 }) {
   if (tempSpentAndReceivedAmountDetails.length !== 0) {
+    let message = "Clear All";
+    if (displayOption === "spent") {
+      message += " Spent Items";
+    } else if (displayOption === "received") {
+      message += " Received Items";
+    }
     return (
-      <button
-        className="btn btn-danger mb-5"
-        onClick={resetExpensesHandler}
-        disabled={displayOption !== "all"}
-      >
-        Clear All
+      <button className="btn btn-danger mb-5" onClick={resetExpensesHandler}>
+        {message}
       </button>
     );
   }

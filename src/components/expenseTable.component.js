@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,7 +11,7 @@ function ExpenseTableComponent({
   return (
     <div>
       <div
-        className="m-2 d-flex justify-content-around align-items-center"
+        className="m-2 d-flex justify-content-around align-items-center orange-border border-radius  mt-3"
         onChange={handleDisplayTableOption}
       >
         <div className="form-check form-check-inline">
@@ -20,6 +20,7 @@ function ExpenseTableComponent({
             type="radio"
             name="inlineRadioOptions"
             id="inlineRadio1"
+            readOnly
             value="all"
             checked={displayOption === "all"}
           />
@@ -34,6 +35,7 @@ function ExpenseTableComponent({
             name="inlineRadioOptions"
             id="inlineRadio2"
             value="received"
+            readOnly
             checked={displayOption === "received"}
           />
           <label className="form-check-label" htmlFor="inlineRadio2">
@@ -47,6 +49,7 @@ function ExpenseTableComponent({
             name="inlineRadioOptions"
             id="inlineRadio3"
             value="spent"
+            readOnly
             checked={displayOption === "spent"}
           />
           <label className="form-check-label" htmlFor="inlineRadio3">
@@ -56,7 +59,7 @@ function ExpenseTableComponent({
       </div>
 
       {tempSpentAndReceivedAmountDetails.length === 0 ? (
-        <h5 className="no-items"> No items to display</h5>
+        <h6 className="no-items"> No items to display</h6>
       ) : (
         ""
       )}
@@ -68,9 +71,15 @@ function ExpenseTableComponent({
       >
         <thead>
           <tr>
-            <th scope="col" className="w-35">Date</th>
-            <th scope="col" className="w-26">Name</th>
-            <th scope="col" className="w-22">Amount</th>
+            <th scope="col" className="w-35">
+              Date
+            </th>
+            <th scope="col" className="w-26">
+              Name
+            </th>
+            <th scope="col" className="w-22">
+              Amount
+            </th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -92,7 +101,6 @@ function ExpenseTableComponent({
               <td>{item.amount} </td>
               <td>
                 <button
-                  disabled={displayOption !== "all"}
                   type="button"
                   className="btn btn-danger"
                   onClick={() => deleteButtonClickHandler(item.uniqueKey)}

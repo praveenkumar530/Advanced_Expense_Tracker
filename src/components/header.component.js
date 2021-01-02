@@ -3,7 +3,7 @@ import React from 'react'
 function HeaderComponent() {
     return (
         <div>
-            Advanced Expense Tracker
+            EXPENSE TRACKER
         </div>
     )
 }
