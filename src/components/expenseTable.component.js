@@ -1,12 +1,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 function ExpenseTableComponent({
   tempSpentAndReceivedAmountDetails,
   deleteButtonClickHandler,
   handleDisplayTableOption,
   displayOption,
+  editButtonClickHandler,
 }) {
   return (
     <div>
@@ -19,12 +20,12 @@ function ExpenseTableComponent({
             className="form-check-input"
             type="radio"
             name="inlineRadioOptions"
-            id="inlineRadio1"
+            id="inlineRadio11"
             readOnly
             value="all"
             checked={displayOption === "all"}
           />
-          <label className="form-check-label" htmlFor="inlineRadio1">
+          <label className="form-check-label" htmlFor="inlineRadio11">
             All
           </label>
         </div>
@@ -33,12 +34,12 @@ function ExpenseTableComponent({
             className="form-check-input "
             type="radio"
             name="inlineRadioOptions"
-            id="inlineRadio2"
+            id="inlineRadio22"
             value="received"
             readOnly
             checked={displayOption === "received"}
           />
-          <label className="form-check-label" htmlFor="inlineRadio2">
+          <label className="form-check-label" htmlFor="inlineRadio22">
             Received
           </label>
         </div>
@@ -71,14 +72,14 @@ function ExpenseTableComponent({
       >
         <thead>
           <tr>
-            <th scope="col" className="w-35">
-              Date
-            </th>
             <th scope="col" className="w-26">
               Name
             </th>
             <th scope="col" className="w-22">
               Amount
+            </th>
+            <th scope="col" className="w-35">
+              Date
             </th>
             <th scope="col">Action</th>
           </tr>
@@ -93,16 +94,27 @@ function ExpenseTableComponent({
                   : "table-success"
               }
             >
-              <td>
-                {item.dateField}
-                <small>{item.strTime}</small>
-              </td>
               <td>{item.receivedOrSpentName} </td>
               <td>{item.amount} </td>
               <td>
+                <span className=" badge badge-pill  badge-info">
+                  {item.dateField}
+                </span>
+                <br /> <small>{item.strTime}</small>
+              </td>
+              <td>
                 <button
                   type="button"
-                  className="btn btn-danger"
+                  className="btn1 btn-warning mr-2"
+                  onClick={() =>
+                    editButtonClickHandler(item.uniqueKey)
+                  }
+                >
+                  <FontAwesomeIcon icon={faPencilAlt} />
+                </button>
+                <button
+                  type="button"
+                  className="btn1 btn-danger"
                   onClick={() => deleteButtonClickHandler(item.uniqueKey)}
                 >
                   <FontAwesomeIcon icon={faTrash} />

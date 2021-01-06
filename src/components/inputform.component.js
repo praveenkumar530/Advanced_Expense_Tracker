@@ -8,6 +8,9 @@ function InputFormComponent({
   spentOrReceived,
   handleSpentOrReceived,
   submitFormHandler,
+  editUniqKey,
+  cancelEditHandler,
+  saveEditedChangesHandler,
 }) {
   return (
     <form onSubmit={submitFormHandler} className="pt-3">
@@ -36,7 +39,10 @@ function InputFormComponent({
           />
         </div>
       </div>
-      <div onChange={handleSpentOrReceived} className="orange-border border-radius">
+      <div
+        onChange={handleSpentOrReceived}
+        className="orange-border border-radius"
+      >
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -66,10 +72,31 @@ function InputFormComponent({
           </label>
         </div>
       </div>
-      <div className="form-group">
-        <button type="submit" className="btn btn-primary mt-2 border-radius  ">
+      {editUniqKey === 0 && (
+        <button type="submit" className="btn btn-success px-5 mb-3 mt-2">
           Submit
         </button>
+      )}
+      <div className="btn-group" role="group">
+        {editUniqKey !== 0 && (
+          <button
+            type="submit"
+            className="btn btn-warning  mb-3  mt-2"
+            onClick={saveEditedChangesHandler}
+          >
+            Save Changes
+          </button>
+        )}
+
+        {editUniqKey !== 0 && (
+          <button
+            type="submit"
+            className="btn btn-secondary px-5 mb-3  mt-2"
+            onClick={cancelEditHandler}
+          >
+            Cancel
+          </button>
+        )}
       </div>
     </form>
   );

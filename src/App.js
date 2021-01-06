@@ -45,6 +45,15 @@ function App() {
   const [incomeArray, setIncomeArray] = useState(getLsincomeArray);
   const [spentArray, setSpentArray] = useState(getLsspentArray);
   const [displayOption, setDisplayOption] = useState("all");
+  const [editUniqKey, setEditUniqKey] = useState(0);
+
+  function cancelEditHandler(e) {
+    setEditUniqKey(0);
+    setspentOrReceived("spent");
+    setAmount("");
+    setReceivedOrSpentName("");
+    e.preventDefault();
+  }
 
   function submitFormHandler(e) {
     setDisplayOption("all");
@@ -186,36 +195,42 @@ function App() {
         `Are you sure ? "${deletableItem.receivedOrSpentName}" -"${deletableItem.amount}" will be deleted !!`
       )
     ) {
+      setEditUniqKey(0);
+
       let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
         (item) => item.uniqueKey !== key
       );
-
-      let newincomeArray = newSpentAndReceivedAmountDetails
-        .filter((item) => item.spentOrReceived === "received")
-        .map((a) => parseInt(a.amount));
-      setIncomeArray(newincomeArray);
-      localStorage.setItem("incomeArray", JSON.stringify(newincomeArray));
-
-      let newSpentArray = newSpentAndReceivedAmountDetails
-        .filter((item) => item.spentOrReceived === "spent")
-        .map((a) => parseInt(a.amount));
-      setSpentArray(newSpentArray);
-      localStorage.setItem("spentArray", JSON.stringify(newSpentArray));
-
-      setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
-      updateNewDisplayArrayDetails(
-        displayOption,
-        newSpentAndReceivedAmountDetails
-      );
-
-      localStorage.setItem(
-        "spentAndReceivedAmountDetails",
-        JSON.stringify(newSpentAndReceivedAmountDetails)
-      );
+      updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
     }
   }
 
+  function updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails) {
+    let newincomeArray = newSpentAndReceivedAmountDetails
+      .filter((item) => item.spentOrReceived === "received")
+      .map((a) => parseInt(a.amount));
+    setIncomeArray(newincomeArray);
+    localStorage.setItem("incomeArray", JSON.stringify(newincomeArray));
+
+    let newSpentArray = newSpentAndReceivedAmountDetails
+      .filter((item) => item.spentOrReceived === "spent")
+      .map((a) => parseInt(a.amount));
+    setSpentArray(newSpentArray);
+    localStorage.setItem("spentArray", JSON.stringify(newSpentArray));
+
+    setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
+    updateNewDisplayArrayDetails(
+      displayOption,
+      newSpentAndReceivedAmountDetails
+    );
+
+    localStorage.setItem(
+      "spentAndReceivedAmountDetails",
+      JSON.stringify(newSpentAndReceivedAmountDetails)
+    );
+  }
+
   function handleDisplayTableOption(e) {
+    setEditUniqKey(0);
     setDisplayOption(e.target.value);
     updateNewDisplayArrayDetails(e.target.value, spentAndReceivedAmountDetails);
   }
@@ -238,6 +253,50 @@ function App() {
     setTempSpentAndReceivedAmountDetails(newTempSpentAndReceivedAmountDetails);
   }
 
+  function editButtonClickHandler(editKey) {
+    setEditUniqKey(editKey);
+    let editableItem = tempSpentAndReceivedAmountDetails.filter(
+      (item) => item.uniqueKey === editKey
+    )[0];
+    setspentOrReceived(editableItem.spentOrReceived);
+    setAmount(editableItem.amount);
+    setReceivedOrSpentName(editableItem.receivedOrSpentName);
+  }
+
+  function saveEditedChangesHandler(e) {
+    //update the existing record with new details ( edited )
+
+    let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails;
+    let objIndex = newSpentAndReceivedAmountDetails.findIndex(
+      (item) => item.uniqueKey === editUniqKey
+    );
+
+    newSpentAndReceivedAmountDetails[
+      objIndex
+    ].receivedOrSpentName = receivedOrSpentName;
+    newSpentAndReceivedAmountDetails[objIndex].amount = amount;
+    newSpentAndReceivedAmountDetails[
+      objIndex
+    ].spentOrReceived = spentOrReceived;
+    setReceivedOrSpentName("");
+    setAmount("");
+    setspentOrReceived("spent");
+    setEditUniqKey(0);
+
+    setSpentAndReceivedAmountDetails(newSpentAndReceivedAmountDetails);
+    updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
+    updateNewDisplayArrayDetails(
+      displayOption,
+      newSpentAndReceivedAmountDetails
+    );
+
+    localStorage.setItem(
+      "spentAndReceivedAmountDetails",
+      JSON.stringify(newSpentAndReceivedAmountDetails)
+    );
+    e.preventDefault();
+  }
+
   return (
     <div className="App container">
       <header className="App-header">
@@ -251,6 +310,9 @@ function App() {
         handleSpentOrReceived={handleSpentOrReceived}
         spentOrReceived={spentOrReceived}
         submitFormHandler={submitFormHandler}
+        editUniqKey={editUniqKey}
+        cancelEditHandler={cancelEditHandler}
+        saveEditedChangesHandler={saveEditedChangesHandler}
       />
       <ShowDetailsComponent
         totalReceived={totalReceived}
@@ -262,6 +324,7 @@ function App() {
         deleteButtonClickHandler={deleteButtonClickHandler}
         handleDisplayTableOption={handleDisplayTableOption}
         displayOption={displayOption}
+        editButtonClickHandler={editButtonClickHandler}
       />
       <div className="App-footer">
         <ResetComponent
