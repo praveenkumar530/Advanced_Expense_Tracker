@@ -13,9 +13,11 @@ function ResetComponent({
       message += " Received Items";
     }
     return (
-      <button className="btn btn-danger mb-5" onClick={resetExpensesHandler}>
-        {message}
-      </button>
+      <div>
+        <button className="btn btn-danger mb-3" onClick={resetExpensesHandler}>
+          {message}
+        </button>
+      </div>
     );
   }
   return <div></div>;

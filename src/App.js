@@ -5,6 +5,8 @@ import InputFormComponent from "./components/inputform.component";
 import ShowDetailsComponent from "./components/showDetails.component";
 import ResetComponent from "./components/reset.component";
 import SpentOrReceivedTableComponent from "./components/expenseTable.component";
+import ExportToExcelComponent from "./components/ExportToExcelComponent";
+
 import {
   getLsincomeArray,
   getLsspentArray,
@@ -96,6 +98,8 @@ function App() {
 
     //Sorting all the expenses by descending order i.e wrt latest item
     newExpenses.sort((x, y) => y.uniqueKey - x.uniqueKey);
+
+
 
     setSpentAndReceivedAmountDetails(newExpenses);
     setTempSpentAndReceivedAmountDetails(newExpenses);
@@ -333,6 +337,9 @@ function App() {
           displayOption={displayOption}
         />
       </div>
+      <ExportToExcelComponent
+        spentAndReceivedAmountDetails={spentAndReceivedAmountDetails}
+      />
     </div>
   );
 }
