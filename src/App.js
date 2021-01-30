@@ -6,7 +6,8 @@ import ShowDetailsComponent from "./components/showDetails.component";
 import ResetComponent from "./components/reset.component";
 import SpentOrReceivedTableComponent from "./components/expenseTable.component";
 import ExportToExcelComponent from "./components/ExportToExcelComponent";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   getLsincomeArray,
   getLsspentArray,
@@ -99,11 +100,11 @@ function App() {
     //Sorting all the expenses by descending order i.e wrt latest item
     newExpenses.sort((x, y) => y.uniqueKey - x.uniqueKey);
 
-
-
     setSpentAndReceivedAmountDetails(newExpenses);
     setTempSpentAndReceivedAmountDetails(newExpenses);
-
+    toast.success(`${receivedOrSpentName} added Successfully !!`, {
+      autoClose: 2000
+    });
     //set the values to local storage
     localStorage.setItem(
       "spentAndReceivedAmountDetails",
@@ -162,6 +163,9 @@ function App() {
           JSON.stringify(newsetSpentAndReceivedAmountDetails)
         );
         localStorage.setItem("incomeArray", []);
+        toast.error(`Deleted All Received Items Successfully !!`, {
+          autoClose: 2000,
+        });
       } else if (displayOption === "spent") {
         let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
           (item) => item.spentOrReceived !== "spent"
@@ -175,6 +179,9 @@ function App() {
           JSON.stringify(newsetSpentAndReceivedAmountDetails)
         );
         localStorage.setItem("spentArray", []);
+        toast.error(`Deleted All Spent Items Successfully !!`, {
+          autoClose: 2000,
+        });
       } else {
         setSpentAndReceivedAmountDetails([]);
         setIncomeArray([]);
@@ -184,7 +191,12 @@ function App() {
         localStorage.setItem("spentAndReceivedAmountDetails", []);
         localStorage.setItem("incomeArray", []);
         localStorage.setItem("spentArray", []);
+
+        toast.error(`Deleted All Items Successfully !!`, {
+          autoClose: 2000,
+        });
       }
+     
     }
   }
 
@@ -204,7 +216,14 @@ function App() {
       let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
         (item) => item.uniqueKey !== key
       );
+
       updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
+      toast.error(
+        ` ${deletableItem.receivedOrSpentName} deleted Successfully !!`,
+        {
+          autoClose: 2000,
+        }
+      );
     }
   }
 
@@ -274,6 +293,8 @@ function App() {
     let objIndex = newSpentAndReceivedAmountDetails.findIndex(
       (item) => item.uniqueKey === editUniqKey
     );
+    let oldName =
+      newSpentAndReceivedAmountDetails[objIndex].receivedOrSpentName;
 
     newSpentAndReceivedAmountDetails[
       objIndex
@@ -294,6 +315,13 @@ function App() {
       newSpentAndReceivedAmountDetails
     );
 
+    toast.success(
+      `${oldName} updated to ${receivedOrSpentName} Successfully !!`,
+      {
+        autoClose: 4000,
+      }
+    );
+    
     localStorage.setItem(
       "spentAndReceivedAmountDetails",
       JSON.stringify(newSpentAndReceivedAmountDetails)
@@ -306,6 +334,7 @@ function App() {
       <header className="App-header">
         <HeaderComponent />
       </header>
+      <ToastContainer />
       <InputFormComponent
         receivedOrSpentName={receivedOrSpentName}
         amount={amount}
@@ -339,6 +368,7 @@ function App() {
       </div>
       <ExportToExcelComponent
         spentAndReceivedAmountDetails={spentAndReceivedAmountDetails}
+        displayOption={displayOption}
       />
     </div>
   );

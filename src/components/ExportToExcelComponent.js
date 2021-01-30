@@ -2,11 +2,15 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 
-function ExportToExcelComponent({ spentAndReceivedAmountDetails }) {
-  spentAndReceivedAmountDetails.sort((x, y) => x.uniqueKey - y.uniqueKey);
+function ExportToExcelComponent({
+  spentAndReceivedAmountDetails,
+  displayOption,
+}) {
+  let newspentAndReceivedAmountDetails = [...spentAndReceivedAmountDetails];
+  newspentAndReceivedAmountDetails.sort((x, y) => x.uniqueKey - y.uniqueKey);
 
   let keys = ["Time", "Date", "Name", "Amount", "Received / Spent"];
-  let values = spentAndReceivedAmountDetails.map((item) =>
+  let values = newspentAndReceivedAmountDetails.map((item) =>
     Object.values(item).slice(1)
   );
 
@@ -30,11 +34,12 @@ function ExportToExcelComponent({ spentAndReceivedAmountDetails }) {
 
   return (
     <>
-      {spentAndReceivedAmountDetails.length !== 0 && (
-        <button className="btn btn-success  mb-3" onClick={exportCSV}>
-          <FontAwesomeIcon icon={faFileExcel} /> Export To Excel{" "}
-        </button>
-      )}
+      {newspentAndReceivedAmountDetails.length !== 0 &&
+        displayOption === "all" && (
+          <button className="btn btn-success  mb-3" onClick={exportCSV}>
+            <FontAwesomeIcon icon={faFileExcel} /> Export To Excel{" "}
+          </button>
+        )}
     </>
   );
 }
