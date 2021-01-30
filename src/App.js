@@ -102,8 +102,8 @@ function App() {
 
     setSpentAndReceivedAmountDetails(newExpenses);
     setTempSpentAndReceivedAmountDetails(newExpenses);
-    toast.success(`${receivedOrSpentName} added Successfully !!`, {
-      autoClose: 2000
+    toast.success(`${receivedOrSpentName} added Successfully!`, {
+      autoClose: 2000,
     });
     //set the values to local storage
     localStorage.setItem(
@@ -142,62 +142,61 @@ function App() {
   );
 
   function resetExpensesHandler() {
-    if (window.confirm("Are you sure ? This will clear all the records !!")) {
-      setReceivedOrSpentName("");
-      setspentOrReceived("spent");
-      setTotalReceived("");
-      setTotalSpent("");
-      setRemaining("");
-      setAmount("");
-      setTempSpentAndReceivedAmountDetails([]);
+    // if (window.confirm("Are you sure ? This will clear all the records !")) {
+    setReceivedOrSpentName("");
+    setspentOrReceived("spent");
+    setTotalReceived("");
+    setTotalSpent("");
+    setRemaining("");
+    setAmount("");
+    setTempSpentAndReceivedAmountDetails([]);
 
-      if (displayOption === "received") {
-        let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
-          (item) => item.spentOrReceived !== "received"
-        );
-        setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
-        setIncomeArray([]);
-        setDisplayOption("received");
-        localStorage.setItem(
-          "spentAndReceivedAmountDetails",
-          JSON.stringify(newsetSpentAndReceivedAmountDetails)
-        );
-        localStorage.setItem("incomeArray", []);
-        toast.error(`Deleted All Received Items Successfully !!`, {
-          autoClose: 2000,
-        });
-      } else if (displayOption === "spent") {
-        let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
-          (item) => item.spentOrReceived !== "spent"
-        );
-        setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
-        setSpentArray([]);
-        setDisplayOption("spent");
-        //Empty values to local storage
-        localStorage.setItem(
-          "spentAndReceivedAmountDetails",
-          JSON.stringify(newsetSpentAndReceivedAmountDetails)
-        );
-        localStorage.setItem("spentArray", []);
-        toast.error(`Deleted All Spent Items Successfully !!`, {
-          autoClose: 2000,
-        });
-      } else {
-        setSpentAndReceivedAmountDetails([]);
-        setIncomeArray([]);
-        setSpentArray([]);
-        setDisplayOption("all");
-        //Empty values to local storage
-        localStorage.setItem("spentAndReceivedAmountDetails", []);
-        localStorage.setItem("incomeArray", []);
-        localStorage.setItem("spentArray", []);
+    if (displayOption === "received") {
+      let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+        (item) => item.spentOrReceived !== "received"
+      );
+      setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
+      setIncomeArray([]);
+      setDisplayOption("received");
+      localStorage.setItem(
+        "spentAndReceivedAmountDetails",
+        JSON.stringify(newsetSpentAndReceivedAmountDetails)
+      );
+      localStorage.setItem("incomeArray", []);
+      toast.error(`Deleted All Received Items Successfully!`, {
+        autoClose: 2000,
+      });
+    } else if (displayOption === "spent") {
+      let newsetSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+        (item) => item.spentOrReceived !== "spent"
+      );
+      setSpentAndReceivedAmountDetails(newsetSpentAndReceivedAmountDetails);
+      setSpentArray([]);
+      setDisplayOption("spent");
+      //Empty values to local storage
+      localStorage.setItem(
+        "spentAndReceivedAmountDetails",
+        JSON.stringify(newsetSpentAndReceivedAmountDetails)
+      );
+      localStorage.setItem("spentArray", []);
+      toast.error(`Deleted All Spent Items Successfully!`, {
+        autoClose: 2000,
+      });
+    } else {
+      setSpentAndReceivedAmountDetails([]);
+      setIncomeArray([]);
+      setSpentArray([]);
+      setDisplayOption("all");
+      //Empty values to local storage
+      localStorage.setItem("spentAndReceivedAmountDetails", []);
+      localStorage.setItem("incomeArray", []);
+      localStorage.setItem("spentArray", []);
 
-        toast.error(`Deleted All Items Successfully !!`, {
-          autoClose: 2000,
-        });
-      }
-     
+      toast.error(`Deleted All Items Successfully!`, {
+        autoClose: 2000,
+      });
     }
+    // }
   }
 
   function deleteButtonClickHandler(key) {
@@ -208,7 +207,7 @@ function App() {
 
     if (
       window.confirm(
-        `Are you sure ? "${deletableItem.receivedOrSpentName}" -"${deletableItem.amount}" will be deleted !!`
+        `Are you sure ? "${deletableItem.receivedOrSpentName}" -"${deletableItem.amount}" will be deleted !`
       )
     ) {
       setEditUniqKey(0);
@@ -219,7 +218,7 @@ function App() {
 
       updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
       toast.error(
-        ` ${deletableItem.receivedOrSpentName} deleted Successfully !!`,
+        ` ${deletableItem.receivedOrSpentName} deleted Successfully!`,
         {
           autoClose: 2000,
         }
@@ -316,12 +315,12 @@ function App() {
     );
 
     toast.success(
-      `${oldName} updated to ${receivedOrSpentName} Successfully !!`,
+      `${oldName} updated to ${receivedOrSpentName} Successfully!`,
       {
         autoClose: 4000,
       }
     );
-    
+
     localStorage.setItem(
       "spentAndReceivedAmountDetails",
       JSON.stringify(newSpentAndReceivedAmountDetails)

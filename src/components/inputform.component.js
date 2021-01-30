@@ -1,4 +1,6 @@
 import React from "react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 function InputFormComponent({
   receivedOrSpentName,
@@ -16,9 +18,11 @@ function InputFormComponent({
     <form onSubmit={submitFormHandler} className="pt-3">
       <div className="form-row mb-2 ">
         <div className="col">
-          <input
+          <TextField
+            label="Item Name"
+            variant="filled"
             type="text"
-            className="form-control input-text-radius border-radius"
+            color="primary"
             placeholder="e.g (milk,rent,sal)"
             value={receivedOrSpentName}
             onChange={handleReceivedOrSpentName}
@@ -27,9 +31,10 @@ function InputFormComponent({
           />
         </div>
         <div className="col">
-          <input
+          <TextField
+            label="Amount"
+            variant="filled"
             type="text"
-            className="form-control input-text-radius border-radius"
             placeholder="e.g (21, 5000, 235)"
             value={amount}
             onChange={handleamount}
@@ -73,9 +78,9 @@ function InputFormComponent({
         </div>
       </div>
       {editUniqKey === 0 && (
-        <button type="submit" className="btn btn-success px-5 mb-3 mt-2">
-          Submit
-        </button>
+        <Button variant="contained" color="primary" type="submit" className="btn btn-success px-5 mb-3 mt-2">
+          SUBMIT
+        </Button>
       )}
       <div className="btn-group" role="group">
         {editUniqKey !== 0 && (
@@ -84,7 +89,7 @@ function InputFormComponent({
             className="btn btn-warning  mb-3  mt-2"
             onClick={saveEditedChangesHandler}
           >
-            Save Changes
+            SAVE CHANGES
           </button>
         )}
 
@@ -94,7 +99,7 @@ function InputFormComponent({
             className="btn btn-secondary px-5 mb-3  mt-2"
             onClick={cancelEditHandler}
           >
-            Cancel
+            CANCEL
           </button>
         )}
       </div>

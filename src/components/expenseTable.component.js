@@ -1,6 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 function ExpenseTableComponent({
   tempSpentAndReceivedAmountDetails,
@@ -106,9 +108,7 @@ function ExpenseTableComponent({
                 <button
                   type="button"
                   className="btn1 btn-warning mr-2"
-                  onClick={() =>
-                    editButtonClickHandler(item.uniqueKey)
-                  }
+                  onClick={() => editButtonClickHandler(item.uniqueKey)}
                 >
                   <FontAwesomeIcon icon={faPencilAlt} />
                 </button>
@@ -119,6 +119,7 @@ function ExpenseTableComponent({
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
+               
               </td>
             </tr>
           ))}
