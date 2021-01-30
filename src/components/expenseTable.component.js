@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 function ExpenseTableComponent({
   tempSpentAndReceivedAmountDetails,
@@ -11,6 +14,31 @@ function ExpenseTableComponent({
   displayOption,
   editButtonClickHandler,
 }) {
+  const [open, setOpen] = useState(false);
+  const [uniqueKey, setUniqueKey] = useState(0);
+  const [itemName, setItemName] = useState("");
+
+  const handleClickOpen = (deletableUniqueKey) => {
+    console.log(deletableUniqueKey);
+    setOpen(true);
+    let deletableItem = tempSpentAndReceivedAmountDetails.filter(
+      (item) => item.uniqueKey === deletableUniqueKey
+    )[0];
+    setItemName(
+      `Are you sure?  ${deletableItem.receivedOrSpentName} will be deleted!`
+    );
+    setUniqueKey(deletableUniqueKey);
+  };
+
+  const handleClose = (x) => {
+    setOpen(false);
+  };
+
+  const handleOkay = (x) => {
+    setOpen(false);
+    deleteButtonClickHandler(uniqueKey);
+  };
+
   return (
     <div>
       <div
@@ -115,16 +143,37 @@ function ExpenseTableComponent({
                 <button
                   type="button"
                   className="btn1 btn-danger"
-                  onClick={() => deleteButtonClickHandler(item.uniqueKey)}
+                  onClick={() => handleClickOpen(item.uniqueKey)}
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
-               
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            backgroundColor: "WindowFrame",
+            boxShadow: "none",
+          },
+        }}
+      >
+        <DialogContent>
+          <DialogContentText> {itemName}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleOkay} variant="outlined" color="secondary">
+            Okay
+          </Button>
+          <Button onClick={handleClose} variant="contained" color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

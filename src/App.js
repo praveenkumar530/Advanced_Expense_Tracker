@@ -205,25 +205,16 @@ function App() {
       (item) => item.uniqueKey === key
     )[0];
 
-    if (
-      window.confirm(
-        `Are you sure ? "${deletableItem.receivedOrSpentName}" -"${deletableItem.amount}" will be deleted !`
-      )
-    ) {
-      setEditUniqKey(0);
+    setEditUniqKey(0);
 
-      let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
-        (item) => item.uniqueKey !== key
-      );
+    let newSpentAndReceivedAmountDetails = spentAndReceivedAmountDetails.filter(
+      (item) => item.uniqueKey !== key
+    );
 
-      updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
-      toast.error(
-        ` ${deletableItem.receivedOrSpentName} deleted Successfully!`,
-        {
-          autoClose: 2000,
-        }
-      );
-    }
+    updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails);
+    toast.error(` ${deletableItem.receivedOrSpentName} deleted Successfully!`, {
+      autoClose: 2000,
+    });
   }
 
   function updateNewIncomeAndSpentArray(newSpentAndReceivedAmountDetails) {
