@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 function InputFormComponent({
+  refToSpentOrReceivedName,
   receivedOrSpentName,
   amount,
   handleReceivedOrSpentName,
@@ -24,6 +25,8 @@ function InputFormComponent({
             type="text"
             color="primary"
             placeholder="e.g (milk,rent,sal)"
+            // ref={refToSpentOrReceivedName}
+            autoFocus
             value={receivedOrSpentName}
             onChange={handleReceivedOrSpentName}
             autoComplete="off"
@@ -78,7 +81,12 @@ function InputFormComponent({
         </div>
       </div>
       {editUniqKey === 0 && (
-        <Button variant="contained" color="primary" type="submit" className="btn btn-success px-5 mb-3 mt-2">
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          className="btn btn-success px-5 mb-3 mt-2"
+        >
           SUBMIT
         </Button>
       )}

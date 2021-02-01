@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-function HeaderComponent() {
-    return (
-        <div>
-            EXPENSE TRACKER
-        </div>
-    )
+function HeaderComponent({ refToHeader }) {
+  return <div ref={refToHeader}>EXPENSE TRACKER</div>;
 }
 
-export default HeaderComponent
+export default HeaderComponent;

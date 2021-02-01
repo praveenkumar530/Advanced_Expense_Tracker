@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HeaderComponent from "./components/header.component";
 import InputFormComponent from "./components/inputform.component";
 import ShowDetailsComponent from "./components/showDetails.component";
@@ -49,6 +49,9 @@ function App() {
   const [spentArray, setSpentArray] = useState(getLsspentArray);
   const [displayOption, setDisplayOption] = useState("all");
   const [editUniqKey, setEditUniqKey] = useState(0);
+
+  const refToSpentOrReceivedName = useRef();
+  const refToHeader = useRef();
 
   function cancelEditHandler(e) {
     setEditUniqKey(0);
@@ -142,7 +145,6 @@ function App() {
   );
 
   function resetExpensesHandler() {
-    // if (window.confirm("Are you sure ? This will clear all the records !")) {
     setReceivedOrSpentName("");
     setspentOrReceived("spent");
     setTotalReceived("");
@@ -196,7 +198,6 @@ function App() {
         autoClose: 2000,
       });
     }
-    // }
   }
 
   function deleteButtonClickHandler(key) {
@@ -267,6 +268,10 @@ function App() {
   }
 
   function editButtonClickHandler(editKey) {
+    //Scroll to Header and Focus task name input field
+    refToHeader.current.scrollIntoView({ behavior: "smooth" });
+    // refToSpentOrReceivedName.current.focus({ preventScroll: true });
+
     setEditUniqKey(editKey);
     let editableItem = tempSpentAndReceivedAmountDetails.filter(
       (item) => item.uniqueKey === editKey
@@ -322,10 +327,11 @@ function App() {
   return (
     <div className="App container">
       <header className="App-header">
-        <HeaderComponent />
+        <HeaderComponent refToHeader={refToHeader} />
       </header>
       <ToastContainer />
       <InputFormComponent
+        refToSpentOrReceivedName={refToSpentOrReceivedName}
         receivedOrSpentName={receivedOrSpentName}
         amount={amount}
         handleReceivedOrSpentName={handleReceivedOrSpentName}
